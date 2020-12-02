@@ -8,7 +8,7 @@ import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 import { ImprovedNoise } from './three/examples/jsm/math/ImprovedNoise.js';
 // import { MapData } from './MapData.js';
 
-import { setMapRotation, getImg, getElevationData } from './MapData.js';
+import { setMapRotation, getMapUrl } from './MapData.js';
 
 
 var container, stats;
@@ -23,7 +23,6 @@ var binSize = 4;
 
 var clock = new THREE.Clock();
 
-var canvas, canvasScaled, context, contextScaled, image, imageData, mapCanvas, mapContext;
 var isDragging = false;
 
 var customUniforms = {};
@@ -38,11 +37,19 @@ export function initTerrain(data) {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xbfd1e5);
 
+  showMaps();
   addTerrain(data);
   addWater();
   prepareScene();
   addMapImage();
   animate();
+}
+
+
+function showMaps() {
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("navMap").style.display = "block";
+  document.getElementById("container").style.display = "block";
 }
 
 function prepareScene() {
@@ -56,11 +63,7 @@ function prepareScene() {
   container.addEventListener('mouseup', e => {
     isDragging = false;
   });
-
-
-  // controls = new FirstPersonControls( camera, renderer.domElement );
-  // controls.movementSpeed = 1000;
-  // controls.lookSpeed = 0.1;
+  
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 500;
@@ -68,20 +71,26 @@ function prepareScene() {
   controls.maxPolarAngle = 60 / 180 * Math.PI;
   controls.enablePan = false;
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+  // stats = new Stats();
+  // container.appendChild(stats.dom);
   window.addEventListener('resize', onWindowResize, false);
 
-  // const sphereRadius = 300;
-  // const sphereWidthDivisions = 32;
-  // const sphereHeightDivisions = 16;
-  // const sphereGeo = new THREE.SphereBufferGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
-  // const sphereMat = new THREE.MeshPhongMaterial({ color: '#CA8' });
-  // const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-  // mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
-  // scene.add(mesh);
+  // addTestSphere();
+  addLights();
+}
 
+function addTestSphere() {
+  const sphereRadius = 300;
+  const sphereWidthDivisions = 32;
+  const sphereHeightDivisions = 16;
+  const sphereGeo = new THREE.SphereBufferGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
+  const sphereMat = new THREE.MeshPhongMaterial({ color: '#CA8' });
+  const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+  mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
+  scene.add(mesh);
+}
 
+function addLights() {
   const color = 0xFFFFFF;
   const intensity = 1;
   const light = new THREE.DirectionalLight(color, intensity);
@@ -90,14 +99,11 @@ function prepareScene() {
   scene.add(light);
   scene.add(light.target);
 
-  //
-
   const dirLight = new THREE.DirectionalLight(0xffffff, 1);
   dirLight.color.setHSL(0.1, 1, 0.95);
   dirLight.position.set(- 1, -100, 1);
   dirLight.position.multiplyScalar(30);
   scene.add(dirLight);
-
 }
 
 export function updateTerrain(data) {
@@ -109,69 +115,17 @@ export function updateTerrain(data) {
   camera.position.set(0, 1000, 0);
 }
 
-export function updateTerrainOG(data) {
-  console.log("updating terrain");
-  camera.position.set(0, 0, 0);
-
-  var vertices = terrainGeometry.attributes.position.array;
-  for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-    vertices[j + 1] = data[i];
-  }
-  generateTexture(data, worldWidth, worldDepth);
-  // generateMapTexture(data, worldWidth, worldDepth);
-
-  texture.wrapS = THREE.ClampToEdgeWrapping;
-  texture.wrapT = THREE.ClampToEdgeWrapping;
-  texture.needsUpdate = true;
-  var mat = new THREE.MeshBasicMaterial({ map: texture });
-
-
-  terrainMesh = new THREE.Mesh(terrainGeometry, mat);
-  terrainMesh.geometry.dynamic = true;
-
-  terrainMesh.geometry.vertices = vertices;
-  terrainMesh.geometry.verticesNeedUpdate = true;
-  terrainMesh.geometry.attributes.position.needsUpdate = true;
-
-
-  addMapImage();
-
-}
 
 function onWindowResize() {
-
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  controls.handleResize();
-
+  // controls.handleResize();
 }
 
 function addTerrain(data) {
   console.log("ADDING TERRAIN");
-  // terrainGeometry = new THREE.PlaneBufferGeometry(worldWidth * binSize, worldDepth * binSize, worldWidth - 1, worldDepth - 1);
-  // terrainGeometry.rotateX(- Math.PI / 2);
-
-  // var vertices = terrainGeometry.attributes.position.array;
-  // for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-  //   vertices[j + 1] = data[i];
-  // }
-  // initCanvas(worldWidth, worldDepth);
-  // generateTexture(data, worldWidth, worldDepth);
-  // texture = new THREE.CanvasTexture(canvasScaled);
-  // var mat = new THREE.MeshBasicMaterial({ map: texture });
-  // terrainMesh = new THREE.Mesh(terrainGeometry, mat);
-  // terrainMesh.geometry.dynamic = true;
-  // scene.add(terrainMesh);
-
-  // texture used to generate "bumpiness"
-  var bumpTexture = new THREE.ImageUtils.loadTexture('images/heightmap.png');
-  bumpTexture.wrapS = bumpTexture.wrapT = THREE.RepeatWrapping;
-  // magnitude of normal displacement
-  var bumpScale = 200.0;
-
+ 
   var oceanTexture = new THREE.ImageUtils.loadTexture('images/dirt-512.jpg');
   oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
@@ -247,7 +201,7 @@ function addMapImage() {
 
   new THREE.ImageLoader()
     .setCrossOrigin('*')
-    .load(getImg() + "?" + performance.now(), function (image) {
+    .load(getMapUrl() + "?" + performance.now(), function (image) {
 
       var texture = new THREE.CanvasTexture(image);
       var material = new THREE.MeshBasicMaterial({ color: 0xff8888, map: texture, opacity: 0.40 });
@@ -259,225 +213,19 @@ function addMapImage() {
 
 function addMapPlane(material) {
   var mapGeo = new THREE.PlaneGeometry(worldWidth * binSize, worldDepth * binSize, 1, 1);
-  // mapTex.wrapS = waterTex.wrapT = THREE.RepeatWrapping;
-  // waterTex.repeat.set(5,5);
-  // var waterMat = new THREE.MeshBasicMaterial( {map: waterTex, transparent:true, opacity:0.40} );
   var mapPlane = new THREE.Mesh(mapGeo, material);
   mapPlane.rotation.x = -Math.PI / 2;
   mapPlane.position.y = 10;
   scene.add(mapPlane);
 }
 
-
-// function generateHeight(width, height) {
-
-//   var size = width * height, data = new Uint8Array(size),
-//     perlin = new ImprovedNoise(), quality = 1, z = Math.random() * 100;
-
-//   for (var j = 0; j < 4; j++) {
-
-//     for (var i = 0; i < size; i++) {
-
-//       var x = i % width, y = ~ ~(i / width);
-//       data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
-
-//     }
-
-//     quality *= 5;
-
-//   }
-
-//   return data;
-
-// }
-
-
-function initCanvas(width, height) {
-  console.log("INIT CANVAS");
-  // canvas = document.createElement('canvas');
-  canvas = document.getElementById('canvas0');
-  canvas.width = width;
-  canvas.height = height;
-  context = canvas.getContext('2d');
-
-  // canvasScaled = document.createElement('canvas');
-  canvasScaled = document.getElementById('canvas1');
-  canvasScaled.width = width * 4;
-  canvasScaled.height = height * 4;
-
-  contextScaled = canvasScaled.getContext('2d');
-  contextScaled.scale(4, 4);
-}
-
-export function initMapContext() {
-  // console.log("map context created?");
-  // mapCanvas = document.getElementsByClassName('mapboxgl-canvas');
-  // mapContext = mapCanvas.getContext('2d');
-  // console.log("map context created?", mapCanvas);
-}
-
-function generateMapTexture(data, width, height) {
-  var vector3 = new THREE.Vector3(0, 0, 0);
-  var sun = new THREE.Vector3(1, 1, 1);
-  sun.normalize();
-
-  context.fillStyle = '#000';
-  context.fillRect(0, 0, width, height);
-
-  image = context.getImageData(0, 0, canvas.width, canvas.height);
-  var imageMapSrc = getImg(); //mapContext.getImageData(0, 0, mapCanvas.width, mapCanvas.height);
-  var imageMap = new Image();
-  imageMap.onload = () => {
-    console.log("IMG", imageMap);
-    context.drawImage(imageMap, -500, 0);
-
-    contextScaled.drawImage(canvas, 0, 0);
-
-    image = contextScaled.getImageData(0, 0, canvasScaled.width, canvasScaled.height);
-    imageData = image.data;
-
-    for (var i = 0, l = imageData.length; i < l; i += 4) {
-      var v = ~ ~(Math.random() * 5);
-      imageData[i] += v;
-      imageData[i + 1] += v;
-      imageData[i + 2] += v;
-    }
-    contextScaled.putImageData(image, 0, 0);
-  }
-  imageMap.src = imageMapSrc;
-
-}
-
-function generateTexture(data, width, height) {
-
-  var vector3 = new THREE.Vector3(0, 0, 0);
-  var sun = new THREE.Vector3(1, 1, 1);
-  sun.normalize();
-
-  context.fillStyle = '#000';
-  context.fillRect(0, 0, width, height);
-
-  image = context.getImageData(0, 0, canvas.width, canvas.height);
-  imageData = image.data;
-
-  // let hasPrinted0 = false;
-  // let hasPrinted1 = false
-  for (var i = 0, j = 0, l = imageData.length; i < l; i += 4, j++) {
-    // if (data[j] !== 0 && !hasPrinted1) {
-    //   console.log("dat", i, j, data[j]);
-    //   hasPrinted1 = true;
-    // }
-    vector3.x = data[j - 2] - data[j + 2];
-    vector3.y = 2;
-    vector3.z = data[j - width * 2] - data[j + width * 2];
-    vector3.normalize();
-
-    var shade = vector3.dot(sun);
-
-    imageData[i] = (96 + shade * 128) * (0.5 + data[j] * 0.007);
-    imageData[i + 1] = (32 + shade * 96) * (0.5 + data[j] * 0.007);
-    imageData[i + 2] = (shade * 96) * (0.5 + data[j] * 0.007);
-  }
-
-  context.putImageData(image, 0, 0);
-
-  // Scaled 4x
-  contextScaled.drawImage(canvas, 0, 0);
-
-  image = contextScaled.getImageData(0, 0, canvasScaled.width, canvasScaled.height);
-  imageData = image.data;
-
-  for (var i = 0, l = imageData.length; i < l; i += 4) {
-    var v = ~ ~(Math.random() * 5);
-    imageData[i] += v;
-    imageData[i + 1] += v;
-    imageData[i + 2] += v;
-  }
-  contextScaled.putImageData(image, 0, 0);
-  return canvasScaled;
-}
-
-// function generateTextureOG(data, width, height) {
-
-//   var canvas, canvasScaled, context, image, imageData, vector3, sun, shade;
-
-//   vector3 = new THREE.Vector3(0, 0, 0);
-
-//   sun = new THREE.Vector3(1, 1, 1);
-//   sun.normalize();
-
-//   canvas = document.createElement('canvas');
-//   canvas.id = "textureCanvas";
-//   canvas.width = width;
-//   canvas.height = height;
-
-//   context = canvas.getContext('2d');
-//   context.fillStyle = '#000';
-//   context.fillRect(0, 0, width, height);
-
-//   image = context.getImageData(0, 0, canvas.width, canvas.height);
-//   imageData = image.data;
-
-//   for (var i = 0, j = 0, l = imageData.length; i < l; i += 4, j++) {
-
-//     vector3.x = data[j - 2] - data[j + 2];
-//     vector3.y = 2;
-//     vector3.z = data[j - width * 2] - data[j + width * 2];
-//     vector3.normalize();
-
-//     shade = vector3.dot(sun);
-
-//     imageData[i] = (96 + shade * 128) * (0.5 + data[j] * 0.007);
-//     imageData[i + 1] = (32 + shade * 96) * (0.5 + data[j] * 0.007);
-//     imageData[i + 2] = (shade * 96) * (0.5 + data[j] * 0.007);
-
-//   }
-
-//   context.putImageData(image, 0, 0);
-
-//   // Scaled 4x
-
-//   canvasScaled = document.createElement('canvas');
-//   canvasScaled.width = width * 4;
-//   canvasScaled.height = height * 4;
-
-//   context = canvasScaled.getContext('2d');
-//   context.scale(4, 4);
-//   context.drawImage(canvas, 0, 0);
-
-//   image = context.getImageData(0, 0, canvasScaled.width, canvasScaled.height);
-//   imageData = image.data;
-
-//   for (var i = 0, l = imageData.length; i < l; i += 4) {
-
-//     var v = ~ ~(Math.random() * 5);
-
-//     imageData[i] += v;
-//     imageData[i + 1] += v;
-//     imageData[i + 2] += v;
-
-//   }
-
-//   context.putImageData(image, 0, 0);
-
-//   return canvasScaled;
-
-// }
-
-//
-
 function animate() {
-
   requestAnimationFrame(animate);
-
   render();
-  stats.update();
-
-
+  if (stats) stats.update();
 }
 
 function render() {
-
   controls.update();
   renderer.render(scene, camera);
 

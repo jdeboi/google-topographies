@@ -1,9 +1,60 @@
+/* html, body {
+  margin: 0;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  height: 100%;
+}
+
+html {
+  width: 100%;
+} */
+
 body {
+  
   background-color: #bfd1e5;
   color: #61443e;
+  font-family: Monospace;
+  line-height: 24px;
+  min-height: 100%;
 }
+
+
+canvas {
+	display: block;
+}
+
 a {
   color: #a06851;
+}
+
+#landingPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* height: 100%;
+  width: 100%; */
+}
+
+#instructions {
+  position: relative;
+  padding: 40px;
+  width: 100%;
+}
+
+#loading {
+  background-color: #bfd1e5;
+  padding: 40px;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 40px;
+  /* text-align: center; */
 }
 
 #navMap {
@@ -11,14 +62,28 @@ a {
   position: absolute;
   top: 50px;
   left: 50px;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   pointer-events: all;
+  border-radius: 8px;
+  display: none;
 }
 
-button {
+#faq {
+  display: none;
+}
+
+#buttons {
   position: absolute;
-  bottom: 100px;
+  /* width: 100%; */
+  right: 20px;
+  top: 20px;
+  /* width: 200px; */
+  font-size: 30px;
+}
+
+#buttons a {
+  color: #61443e;
 }
 
 #canvases {
