@@ -1,0 +1,28 @@
+body {
+  background-color: #bfd1e5;
+  color: #61443e;
+}
+a {
+  color: #a06851;
+}
+
+#navMap {
+  z-index: 300;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  width: 300px;
+  height: 300px;
+  pointer-events: all;
+}
+
+button {
+  position: absolute;
+  bottom: 100px;
+}
+
+#canvases {
+  display: none;
+  /* position: absolute;
+  top: 500px; */
+}
