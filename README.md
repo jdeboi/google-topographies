@@ -6,7 +6,7 @@ I created this visualization while reading J.B. Harley, a historian of cartograp
 In short, we can no longer think of Google Maps as an objective representation of the Earth’s surface, but rather as a tool of surveillance capitalism where paid advertisements on the map ultimately influence consumer decisions and travel directions. Through this virtual terrain, I hoped to give material form to these hidden landscapes of power.  
 
 ## Instructions  
-### Your Location Data  
+### 1. Your Location Data  
 1. Go to [Google Takeout](https://takeout.google.com/?pli=1) and download "Location History".  
 2. Wait till your download is ready.  
 3. Unzip folder  
@@ -14,7 +14,7 @@ In short, we can no longer think of Google Maps as an objective representation o
   
 **Privacy Note** The app does not store any of your data. It attempts to use your browser's location (assuming you've enabled this in system preferences) at the beginning to start the map in a convenient spot.  
   
-### Navigating the Scene  
+### 2. Navigating the Scene  
 Use the mini-map to find a location to visualize. **Click** a spot on the mini-map to move the visualization to those coordinates.
 
 ## Code  
