@@ -108,7 +108,7 @@ a {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
-  background: linear-gradient(to bottom, rgba(20, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("/images/bg.png");
+  background: linear-gradient(to bottom, rgba(20, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../images/bg.png");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
