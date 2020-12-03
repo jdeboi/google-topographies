@@ -14,7 +14,7 @@ html {
 
 body {
   
-  background-color: #bfd1e5;
+  background-color: rgb(59,	103,	99	);
   color: #61443e;
   font-family: Monospace;
   line-height: 24px;
@@ -31,21 +31,22 @@ a {
 }
 
 #landingPage {
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
   /* height: 100%;
   width: 100%; */
 }
 
 #instructions {
-  position: relative;
+  /* position: relative;
   padding: 40px;
-  width: 100%;
+  width: 100%; */
+  display: none;
 }
 
 #loading {
-  background-color: #bfd1e5;
+  /* background-color: #bfd1e5;
   padding: 40px;
   display: none;
   position: absolute;
@@ -53,14 +54,19 @@ a {
   left: 0;
   height: 100%;
   width: 100%;
-  font-size: 40px;
+  font-size: 40px; */
+  display: none;
   /* text-align: center; */
+}
+
+#mapContainer {
+  display: none;
 }
 
 #navMap {
   z-index: 300;
   position: absolute;
-  top: 50px;
+  bottom: 80px;
   left: 50px;
   width: 200px;
   height: 200px;
@@ -90,4 +96,22 @@ a {
   display: none;
   /* position: absolute;
   top: 500px; */
+}
+
+#mapCover {
+  height: 100%;
+  width: 100%;
+  background-color: blue;
+  opacity: .5;
+}
+
+header.masthead {
+  padding-top: 10rem;
+  padding-bottom: calc(10rem - 4.5rem);
+  background: linear-gradient(to bottom, rgba(20, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("/images/bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+  /* height: 100%; */
 }

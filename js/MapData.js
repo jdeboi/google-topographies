@@ -19,7 +19,7 @@ const mappa = new Mappa('Mapbox', key);
 
 let myMap;
 let navMap;
-let center;
+let navMapZoom = 10.5;
 
 // Options for map
 let options = {
@@ -42,7 +42,7 @@ let options = {
 
 if (DEV_MODE) startDevMap();
 else {
-  document.getElementById('myFile').addEventListener('input', function (evt) {
+  document.getElementById('browse').addEventListener('input', function (evt) {
     readUploadedFile()
       .then(getCenter)
       .then((center) => moveMap(center))
@@ -70,68 +70,6 @@ function startDevMap() {
     })
 
 }
-
-////////////////////////////////////////////////////////////////////////////////////
-// MAP CENTER
-////////////////////////////////////////////////////////////////////////////////////
-
-// try to get browser gps
-// otherwise, return NOLA coords
-async function getCenter() {
-  // Will resolve after 5s
-  let promiseTimeout = new Promise((resolve, reject) => {
-    let wait = setTimeout(() => {
-      clearTimeout(wait);
-      setNolaCenter();
-      resolve(center);
-    }, 5000)
-  })
-
-  return Promise.race([
-    promiseTimeout,
-    getBrowserCenter()
-  ]);
-}
-
-async function getBrowserCenter() {
-  try {
-    let position = await getPosition();
-    if (DEV_MODE) console.log("POS", position);
-    center = { lng: position.coords.longitude, lat: position.coords.latitude };
-    return center;
-  }
-  catch (error) {
-    console.log(error);
-    return setNolaCenter();
-  }
-}
-
-function getPosition(options) {
-  return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options);
-  });
-}
-
-function setNolaCenter() {
-  let homeLat = 29.9307079;
-  let homeLon = -90.105797;
-  center = { lng: homeLon, lat: homeLat };
-  return center;
-}
-
-function moveMap(coord) {
-  consoleID = 0;
-  if (DEV_MODE) console.log((consoleID++), " map moving");
-  moveCenter(coord);
-  resetMap();
-  // myMap = mappa.staticMap(options);
-}
-
-function moveCenter(coord) {
-  options.lat = coord.lat;
-  options.lon = coord.lng;
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////////
 // MAP DATA CRUNCHING
@@ -299,25 +237,26 @@ export function getMapUrl() {
   return myMap.imgUrl;
 }
 
+// initialize mini map
 function addNavMap() {
   mapboxgl.accessToken = keys.mapbox;
   navMap = new mapboxgl.Map({
     container: 'navMap',
     style: 'mapbox://styles/jdeboi/cki7rn91i675t19l7ckudb7e5',
-    center: center,
-    zoom: 10
+    center: {lat: options.lat, lng: options.lng},
+    zoom: navMapZoom
   });
 
   navMap.on('click', function (e) {
-    center = { lng: e.lngLat.wrap().lng, lat: e.lngLat.wrap().lat };
+    let center = { lng: e.lngLat.wrap().lng, lat: e.lngLat.wrap().lat };
     navMap.flyTo({
       center: [center.lng, center.lat],
-      zoom: 11,
       bearing: 0,
       pitch: 0,
+      zoom: navMapZoom,
       essential: true // this animation is considered essential with respect to prefers-reduced-motion
     })
-    newMap();
+    newMap(center);
   });
 }
 
@@ -330,10 +269,10 @@ export function setMapRotation(rot) {
   }
 }
 
-function newMap() {
+function newMap(center) {
   console.log("-----------new map");
   moveMap(center); // includes resettings
-  console.log("marker", center);
+  // console.log("marker", center);
   loadMappa()
     .then(prepareData)
     .then((data) => updateTerrain(data))
@@ -342,15 +281,78 @@ function newMap() {
     })
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////
+// MAP CENTER
+////////////////////////////////////////////////////////////////////////////////////
+
+// try to get browser gps
+// otherwise, return NOLA coords
+async function getCenter() {
+  // Will resolve after 5s
+  let promiseTimeout = new Promise((resolve, reject) => {
+    let wait = setTimeout(() => {
+      clearTimeout(wait);
+      let center = getNolaCenter();
+      resolve(center);
+    }, 5000)
+  })
+
+  return Promise.race([
+    promiseTimeout,
+    getBrowserCenter()
+  ]);
+}
+
+async function getBrowserCenter() {
+  try {
+    let position = await getPosition();
+    if (DEV_MODE) console.log("POS", position);
+    let center = { lng: position.coords.longitude, lat: position.coords.latitude };
+    return center;
+  }
+  catch (error) {
+    console.log(error);
+    return getNolaCenter();
+  }
+}
+
+function getPosition(options) {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+}
+
+function getNolaCenter() {
+  let homeLat = 29.9307079;
+  let homeLon = -90.105797;
+  let center = { lng: homeLon, lat: homeLat };
+  return center;
+}
+
+function moveMap(coord) {
+  consoleID = 0;
+  if (DEV_MODE) console.log((consoleID++), " map moving");
+  moveCenter(coord);
+  resetMap();
+  // myMap = mappa.staticMap(options);
+}
+
+function moveCenter(coord) {
+  options.lat = coord.lat;
+  options.lng = coord.lng;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////
 // LOADING JSON
 ////////////////////////////////////////////////////////////////////////////////////
 
 function readUploadedFile() {
-  loadingMapPage();
+  showLoading();
   var promise = new Promise(function (resolve, reject) {
     // do a thing, possibly async, then…
-    var x = document.getElementById("myFile");
+    var x = document.getElementById("browse");
     if (x.files.length == 0) {
       reject(Error("no file uploaded"));
     }
@@ -374,10 +376,8 @@ function readUploadedFile() {
   return promise;
 }
 
-
-function loadingMapPage() {
-  document.getElementById("loading").style.display = "block";
-  document.getElementById("landingPage").style.display = "none";
+function toggleInfo() {
+  console.log("testing");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////

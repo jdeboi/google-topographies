@@ -30,27 +30,21 @@ var displacement;
 
 export function initTerrain(data) {
   console.log("init terrain")
-  container = document.getElementById('container');
+  container = document.getElementById('threeContainer');
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 20000);
   camera.position.set(0, 1000, 0);
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xbfd1e5);
+  scene.background = new THREE.Color(0x00);
 
-  showMaps();
+  addMapImage();
   addTerrain(data);
   addWater();
   prepareScene();
-  addMapImage();
+  showMaps();
   animate();
 }
 
-
-function showMaps() {
-  document.getElementById("loading").style.display = "none";
-  document.getElementById("navMap").style.display = "block";
-  document.getElementById("container").style.display = "block";
-}
 
 function prepareScene() {
   renderer = new THREE.WebGLRenderer();
