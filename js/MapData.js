@@ -2,9 +2,9 @@ import { ImprovedNoise } from './three/examples/jsm/math/ImprovedNoise.js';
 import { initTerrain, updateTerrain } from './terrain.js';
 
 //// FOR DEVELOPMENT
-import json from "../data/Location History.js";
+// import json from "../data/Location History.js";
 export const DEV_MODE = false;
-const LOCAL = true;
+const LOCAL = false;
 let consoleID = 0;
 
 let MAP_DIM = 1024;
