@@ -50,7 +50,6 @@ else {
     readUploadedFile()
       .then((j) => {
         json = j;
-        console.log(json.locations.length)
       })
       .then(getCenter)
       .then((center) => moveMap(center))
