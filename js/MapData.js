@@ -15,7 +15,8 @@ let NUM_COLS = NUM_ROWS;
 let elevations = [];
 let locations = [];
 
-const key = LOCAL?keysDev.mapbox:keys.mapbox;
+// let key = LOCAL?keysDev.mapbox:keys.mapbox;
+const key = keys.mapbox;
 const mappa = new Mappa('Mapbox', key);
 
 let myMap;
@@ -241,7 +242,7 @@ export function getMapUrl() {
 
 // initialize mini map
 function addNavMap() {
-  mapboxgl.accessToken = LOCAL?keysDev.mapbox:keys.mapbox;
+  mapboxgl.accessToken = key;
   navMap = new mapboxgl.Map({
     container: 'navMap',
     style: 'mapbox://styles/jdeboi/cki7rn91i675t19l7ckudb7e5',
