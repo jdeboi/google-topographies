@@ -14,6 +14,7 @@ let NUM_COLS = NUM_ROWS;
 
 let elevations = [];
 let locations = [];
+let json;
 
 // let key = LOCAL?keysDev.mapbox:keys.mapbox;
 const key = keys.mapbox;
@@ -47,6 +48,9 @@ if (DEV_MODE) startDevMap();
 else {
   document.getElementById('browse').addEventListener('input', function (evt) {
     readUploadedFile()
+      .then((j) => {
+        json = j;
+      })
       .then(getCenter)
       .then((center) => moveMap(center))
       .then(loadMappa)
@@ -103,7 +107,9 @@ function resetMap() {
   locations = [];
 }
 
-function setLocationBuffer() {
+// selects coordinates of interest
+// TODO make this faster/ better with a Quad tree or something
+function setLocationBuffer(json) {
   for (let i = 0; i < json.locations.length; i++) {
     let lat = json.locations[i].latitudeE7 / 10000000.0;
     let lon = json.locations[i].longitudeE7 / 10000000.0;
@@ -293,7 +299,7 @@ function newMap(center) {
 // otherwise, return NOLA coords
 async function getCenter() {
   // Will resolve after 5s
-  let t = DEV_MODE?100:5000;
+  let t = DEV_MODE ? 100 : 5000;
   let promiseTimeout = new Promise((resolve, reject) => {
     let wait = setTimeout(() => {
       clearTimeout(wait);
