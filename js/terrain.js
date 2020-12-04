@@ -67,9 +67,9 @@ function prepareScene() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 50;
-  controls.maxDistance = 10000;
+  controls.maxDistance = 8000;
   controls.maxPolarAngle = 60 / 180 * Math.PI;
-  // controls.enablePan = false;
+  controls.enablePan = false;
 
   if (DEV_MODE) {
     stats = new Stats();

@@ -14,7 +14,8 @@ html {
 
 body {
   
-  background-color: #fff1c2; //rgb(59,	103,	99	);
+  background-color: #fff1c2; 
+  /* //rgb(59,	103,	99	); */
   color: #61443e;
   font-family: Monospace;
   line-height: 24px;
@@ -31,32 +32,14 @@ a {
 }
 
 #landingPage {
-  /* position: absolute;
-  top: 0;
-  left: 0; */
-  /* height: 100%;
-  width: 100%; */
 }
 
 #instructions {
-  /* position: relative;
-  padding: 40px;
-  width: 100%; */
   display: none;
 }
 
 #loading {
-  /* background-color: #bfd1e5;
-  padding: 40px;
   display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  font-size: 40px; */
-  display: none;
-  /* text-align: center; */
 }
 
 #mapContainer {
@@ -79,31 +62,7 @@ a {
   display: none;
 }
 
-#buttons {
-  position: absolute;
-  /* width: 100%; */
-  right: 20px;
-  top: 20px;
-  /* width: 200px; */
-  font-size: 30px;
-}
 
-#buttons a {
-  color: #61443e;
-}
-
-#canvases {
-  display: none;
-  /* position: absolute;
-  top: 500px; */
-}
-
-#mapCover {
-  height: 100%;
-  width: 100%;
-  background-color: blue;
-  opacity: .5;
-}
 
 header.masthead {
   padding-top: 10rem;

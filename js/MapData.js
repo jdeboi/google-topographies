@@ -4,6 +4,7 @@ import { initTerrain, updateTerrain } from './terrain.js';
 //// FOR DEVELOPMENT
 import json from "../data/Location History.js";
 export const DEV_MODE = false;
+const LOCAL = false;
 let consoleID = 0;
 
 let MAP_DIM = 1024;
@@ -14,7 +15,7 @@ let NUM_COLS = NUM_ROWS;
 let elevations = [];
 let locations = [];
 
-const key = keys.mapbox;
+const key = LOCAL?keysDev.mapbox:keys.mapbox;
 const mappa = new Mappa('Mapbox', key);
 
 let myMap;
@@ -240,7 +241,7 @@ export function getMapUrl() {
 
 // initialize mini map
 function addNavMap() {
-  mapboxgl.accessToken = keys.mapbox;
+  mapboxgl.accessToken = LOCAL?keysDev.mapbox:keys.mapbox;
   navMap = new mapboxgl.Map({
     container: 'navMap',
     style: 'mapbox://styles/jdeboi/cki7rn91i675t19l7ckudb7e5',
