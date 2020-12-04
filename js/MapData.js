@@ -23,7 +23,7 @@ let elevations = [];
 let locations = [];
 let json;
 
-const key = keysDev?keysDev.mapbox:keys.mapbox;
+const key = keys.mapbox;
 const mappa = new Mappa('Mapbox', key);
 
 let myMap;
