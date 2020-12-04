@@ -69,7 +69,7 @@ function prepareScene() {
   controls.minDistance = 50;
   controls.maxDistance = 8000;
   controls.maxPolarAngle = 60 / 180 * Math.PI;
-  controls.enablePan = false;
+  if (!DEV_MODE) controls.enablePan = false;
 
   if (DEV_MODE) {
     stats = new Stats();

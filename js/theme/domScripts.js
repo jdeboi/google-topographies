@@ -6,15 +6,12 @@ function showInstructions() {
     document.getElementById("instructions").style.display = "block";
     document.getElementById("landingPage").style.display = "none";
 }
-// function showLoading() {
-//     document.getElementById("instructions").style.display = "none";
-//     document.getElementById("loading").style.display = "block";
-// }
+
 function showMaps() {
     document.getElementById("header").style.display = "none";
     document.getElementById("mapContainer").style.display = "block";
-    document.getElementById("navMap").style.display = "block";
     document.getElementById("mainNav").classList.add('dark');
+    document.getElementById("navMap").style.display = "block";
 
     // for picture taking
     // document.getElementById("mainNav").style.display = "none";

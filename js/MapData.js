@@ -4,7 +4,6 @@ import { initTerrain, updateTerrain } from './terrain.js';
 //// FOR DEVELOPMENT
 // import json from "../data/Location History.js";
 export const DEV_MODE = false;
-const LOCAL = false;
 let consoleID = 0;
 
 let MAP_DIM = 1024;
@@ -16,8 +15,7 @@ let elevations = [];
 let locations = [];
 let json;
 
-// let key = LOCAL?keysDev.mapbox:keys.mapbox;
-const key = keys.mapbox; //keys.mapbox;
+const key = keysDev?keysDev.mapbox:keys.mapbox;
 const mappa = new Mappa('Mapbox', key);
 
 let myMap;
@@ -59,6 +57,7 @@ else {
       .then(addNavMap)
 
       .catch((error) => {
+        alert("Sorry, there was an error: " + error);
         console.log(error);
       })
   });
@@ -359,7 +358,6 @@ function moveCenter(coord) {
 ////////////////////////////////////////////////////////////////////////////////////
 
 function readUploadedFile() {
-  showLoading();
   var promise = new Promise(function (resolve, reject) {
     // do a thing, possibly async, then…
     var x = document.getElementById("browse");
@@ -367,13 +365,15 @@ function readUploadedFile() {
       reject(Error("no file uploaded"));
     }
     else if (x.files[0].name != "Location History.json") {
-      reject(Error("file should be named Location History.json"));
+      // alert("file should be named Location History.json");
+      reject("file should be named Location History.json");
     }
     else {
       let file = x.files[0];
       let reader = new FileReader();
 
       reader.readAsText(file);
+      showLoading();
       reader.onload = function () {
         var json = JSON.parse(reader.result);
         resolve(json);
