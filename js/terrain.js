@@ -133,19 +133,19 @@ function onWindowResize() {
 function addTerrain(data) {
   console.log("ADDING TERRAIN");
 
-  var oceanTexture = new THREE.ImageUtils.loadTexture('images/dirt-512.jpg');
+  var oceanTexture = new THREE.ImageUtils.loadTexture('textures/terrain/dirt-512.jpg');
   oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
-  var sandyTexture = new THREE.ImageUtils.loadTexture('images/sand-512.jpg');
+  var sandyTexture = new THREE.ImageUtils.loadTexture('textures/terrain/images/sand-512.jpg');
   sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
-  var grassTexture = new THREE.ImageUtils.loadTexture('images/grass-512.jpg');
+  var grassTexture = new THREE.ImageUtils.loadTexture('textures/terrain/grass-512.jpg');
   grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
-  var rockyTexture = new THREE.ImageUtils.loadTexture('images/rock-512.jpg');
+  var rockyTexture = new THREE.ImageUtils.loadTexture('textures/terrain/rock-512.jpg');
   rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
-  var snowyTexture = new THREE.ImageUtils.loadTexture('images/snow-512.jpg');
+  var snowyTexture = new THREE.ImageUtils.loadTexture('textures/terrain/snow-512.jpg');
   snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
 
 
