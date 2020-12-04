@@ -17,7 +17,8 @@ Keep in mind that this visualization presents data from a device that has enable
 4. Open Takeout > Location History, and upload 'Location History.json' into the input box  
   
 ### 2. Navigating the Scene  
-Use the mini-map to find a location to visualize. **Click** a spot on the mini-map to move the visualization to those coordinates.
+Use the mini-map to find a location to visualize.   
+**Click** a spot on the mini-map to move the visualization to those coordinates.
 
 ## Code  
 I created this app using [three.js](https://threejs.org/), shaders, [Mappa.js](https://mappa.js.org/), and Mapbox. I found [this shader height map example](https://stemkoski.github.io/Three.js/Shader-Heightmap-Textures.html) and this [custom shader attribute / displacement example](https://threejs.org/examples/webgl_custom_attributes.html) useful. 
