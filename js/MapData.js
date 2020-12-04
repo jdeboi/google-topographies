@@ -1,3 +1,11 @@
+/*
+Did I
+1. comment on dev keys
+2. make dev_mode false
+3. comment out import json
+4. make sure we aren't panning / photo taking
+*/
+
 import { ImprovedNoise } from './three/examples/jsm/math/ImprovedNoise.js';
 import { initTerrain, updateTerrain } from './terrain.js';
 
