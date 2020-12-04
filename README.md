@@ -21,6 +21,3 @@ Use the mini-map to find a location to visualize. **Click** a spot on the mini-m
 
 ## Code  
 I created this app using [three.js](https://threejs.org/), shaders, [Mappa.js](https://mappa.js.org/), and Mapbox. I found [this shader height map example](https://stemkoski.github.io/Three.js/Shader-Heightmap-Textures.html) and this [custom shader attribute / displacement example](https://threejs.org/examples/webgl_custom_attributes.html) useful. 
-
-
-Explore your data as if it were a digital terrain (assuming you’ve let Google track your movements!). Uncover hidden topographies mediated by #surveillancecapitalism. Link in bio. I made this #datavisualization with #threejs #mapbox #shaders #webgl #creativecoding 
