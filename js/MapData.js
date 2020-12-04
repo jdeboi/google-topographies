@@ -3,7 +3,7 @@ import { initTerrain, updateTerrain } from './terrain.js';
 
 //// FOR DEVELOPMENT
 import json from "../data/Location History.js";
-const DEV_MODE = false;
+export const DEV_MODE = false;
 let consoleID = 0;
 
 let MAP_DIM = 1024;
@@ -32,7 +32,8 @@ let options = {
   pitch: 0,
   username: 'jdeboi', // don't include for mapbox styles
   // style: 'ck7efwpg40can1it3rvj6cw5t'
-  style: 'ck6cc18vl4wxg1io2bqvk6wj5'
+  style: 'ck6cc18vl4wxg1io2bqvk6wj5' // satellite
+  // style: 'cki7pudxm2tbn19rwcbiqd25p'
 }
 
 
@@ -68,7 +69,7 @@ function startDevMap() {
     .catch((error) => {
       console.log(error);
     })
-
+  setDevDom();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -243,7 +244,7 @@ function addNavMap() {
   navMap = new mapboxgl.Map({
     container: 'navMap',
     style: 'mapbox://styles/jdeboi/cki7rn91i675t19l7ckudb7e5',
-    center: {lat: options.lat, lng: options.lng},
+    center: { lat: options.lat, lng: options.lng },
     zoom: navMapZoom
   });
 
@@ -290,12 +291,13 @@ function newMap(center) {
 // otherwise, return NOLA coords
 async function getCenter() {
   // Will resolve after 5s
+  let t = DEV_MODE?100:5000;
   let promiseTimeout = new Promise((resolve, reject) => {
     let wait = setTimeout(() => {
       clearTimeout(wait);
       let center = getNolaCenter();
       resolve(center);
-    }, 5000)
+    }, t)
   })
 
   return Promise.race([

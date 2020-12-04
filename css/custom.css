@@ -14,7 +14,7 @@ html {
 
 body {
   
-  background-color: rgb(59,	103,	99	);
+  background-color: #fff1c2; //rgb(59,	103,	99	);
   color: #61443e;
   font-family: Monospace;
   line-height: 24px;
@@ -108,7 +108,8 @@ a {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
-  background: linear-gradient(to bottom, rgba(20, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../images/bg.png");
+  background: linear-gradient(to bottom, rgba(20, 77, 66, 0.8) 0%, rgba(87, 78, 72, 0.8) 100%), url("../images/bg2.png");
+  /* background: linear-gradient(to bottom, rgba(255, 241, 194, 1) 0%, rgba(255, 241, 194, .5) 20%, rgba(20, 77, 66, 0.8) 50%,  rgba(20, 77, 66, 0.8) 100%), url("../images/bg.png"); */
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;

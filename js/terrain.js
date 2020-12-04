@@ -6,27 +6,28 @@ import Stats from './three/examples/jsm/libs/stats.module.js';
 // import { FirstPersonControls } from './three/examples/jsm/controls/FirstPersonControls.js';
 import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
 import { ImprovedNoise } from './three/examples/jsm/math/ImprovedNoise.js';
-// import { MapData } from './MapData.js';
+import { DEV_MODE } from './MapData.js';
+import { Water } from './three/examples/jsm/objects/Water2.js';
 
 import { setMapRotation, getMapUrl } from './MapData.js';
 
 
 var container, stats;
 
-var camera, controls, scene, renderer;
+var camera, controls, scene, renderer, water;
 
-var terrainMesh, texture, terrainGeometry;
+var terrainMesh, texture, terrainGeometry, mapPlane;
 
 var worldWidth = 256, worldDepth = worldWidth,
   worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
 var binSize = 4;
 
-var clock = new THREE.Clock();
-
 var isDragging = false;
 
 var customUniforms = {};
 var displacement;
+
+var loadingMappa = true;
 
 export function initTerrain(data) {
   console.log("init terrain")
@@ -35,14 +36,19 @@ export function initTerrain(data) {
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 20000);
   camera.position.set(0, 1000, 0);
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x00);
+  scene.background = new THREE.Color(0xfff1c2);//cyan 0x3b6763
 
-  addMapImage();
   addTerrain(data);
   addWater();
   prepareScene();
+  addMapImage();
   showMaps();
   animate();
+  // .then(showMaps)
+  // .then(animate)
+  // .catch((err) => {
+  //   console.log(err);
+  // })
 }
 
 
@@ -57,16 +63,20 @@ function prepareScene() {
   container.addEventListener('mouseup', e => {
     isDragging = false;
   });
-  
+
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 500;
+  controls.minDistance = 50;
   controls.maxDistance = 10000;
   controls.maxPolarAngle = 60 / 180 * Math.PI;
-  controls.enablePan = false;
+  // controls.enablePan = false;
 
-  // stats = new Stats();
-  // container.appendChild(stats.dom);
+  if (DEV_MODE) {
+    stats = new Stats();
+    container.appendChild(stats.dom);
+  }
+
+
   window.addEventListener('resize', onWindowResize, false);
 
   // addTestSphere();
@@ -101,12 +111,15 @@ function addLights() {
 }
 
 export function updateTerrain(data) {
-  for (var i = 0, j = 0, l = displacement.length; i < l; i++, j += 3) {
-    displacement[i] = data[i];
-  }
-  terrainMesh.geometry.attributes.displacement.needsUpdate = true;
-  addMapImage();
-  camera.position.set(0, 1000, 0);
+  updateMapImage()
+    .then(() => {
+      for (var i = 0, j = 0, l = displacement.length; i < l; i++, j += 3) {
+        displacement[i] = data[i];
+      }
+      terrainMesh.geometry.attributes.displacement.needsUpdate = true;
+      camera.position.set(0, 1000, 0);
+    });
+
 }
 
 
@@ -119,7 +132,7 @@ function onWindowResize() {
 
 function addTerrain(data) {
   console.log("ADDING TERRAIN");
- 
+
   var oceanTexture = new THREE.ImageUtils.loadTexture('images/dirt-512.jpg');
   oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
@@ -179,35 +192,83 @@ function addTerrain(data) {
 
 
 function addWater() {
-  var waterGeo = new THREE.PlaneGeometry(worldWidth * binSize, worldDepth * binSize, 1, 1);
-  var waterTex = new THREE.ImageUtils.loadTexture('../images/water512.jpg');
-  waterTex.wrapS = waterTex.wrapT = THREE.RepeatWrapping;
-  waterTex.repeat.set(5, 5);
-  var waterMat = new THREE.MeshBasicMaterial({ map: waterTex, transparent: true, opacity: 0.40 });
-  var water = new THREE.Mesh(waterGeo, waterMat);
-  water.rotation.x = -Math.PI / 2;
+  // var waterGeo = new THREE.PlaneGeometry(worldWidth * binSize, worldDepth * binSize, 1, 1);
+  // var waterTex = new THREE.ImageUtils.loadTexture('../images/water512.jpg');
+  // waterTex.wrapS = waterTex.wrapT = THREE.RepeatWrapping;
+  // waterTex.repeat.set(5, 5);
+  // var waterMat = new THREE.MeshBasicMaterial({ map: waterTex, transparent: true, opacity: 0.40 });
+  // var water = new THREE.Mesh(waterGeo, waterMat);
+  // water.rotation.x = -Math.PI / 2;
+  // water.position.y = 15;
+  // scene.add(water);
+
+  const waterGeometry = new THREE.PlaneBufferGeometry(worldWidth * binSize, worldDepth * binSize);
+  water = new Water(waterGeometry, {
+    color: 0xffffff,
+    scale: 1,
+    flowDirection: new THREE.Vector2(.3, .3),
+    textureWidth: 1024,
+    textureHeight: 1024
+  });
+
   water.position.y = 15;
+  water.rotation.x = Math.PI * - 0.5;
   scene.add(water);
+
 }
 
 
 function addMapImage() {
-
-  new THREE.ImageLoader()
-    .setCrossOrigin('*')
-    .load(getMapUrl() + "?" + performance.now(), function (image) {
-
+  return getMappaImg()
+    .then((image) => {
       var texture = new THREE.CanvasTexture(image);
-      var material = new THREE.MeshBasicMaterial({ color: 0xff8888, map: texture, opacity: 0.40 });
+      var material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: texture, opacity: .5, transparent: true });
       addMapPlane(material);
-
-    });
-
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 }
+
+function getMappaImg() {
+  showLoading();
+  return new Promise((resolve, reject) => {
+    new THREE.ImageLoader()
+      .setCrossOrigin('*')
+      .load(getMapUrl() + "?" + performance.now(),
+        function (image) {
+          hideLoading();
+          resolve(image);
+        },
+        undefined, //on progress not currently supported
+        function (err) {
+          hideLoading();
+          reject(err);
+        }
+      );
+  })
+}
+
+function updateMapImage() {
+  showLoading();
+  return getMappaImg()
+    .then((image) => {
+      var texture = new THREE.CanvasTexture(image);
+      var material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: texture, opacity: .5, transparent: true });
+      mapPlane.material = material;
+      mapPlane.material.needsUpdate = true;
+      hideLoading();
+    })
+    .catch((err) => {
+      console.log(err);
+      hideLoading();
+    })
+}
+
 
 function addMapPlane(material) {
   var mapGeo = new THREE.PlaneGeometry(worldWidth * binSize, worldDepth * binSize, 1, 1);
-  var mapPlane = new THREE.Mesh(mapGeo, material);
+  mapPlane = new THREE.Mesh(mapGeo, material);
   mapPlane.rotation.x = -Math.PI / 2;
   mapPlane.position.y = 10;
   scene.add(mapPlane);
