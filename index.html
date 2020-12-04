@@ -47,6 +47,7 @@
         aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul id="socials" class="navbar-nav ml-auto my-2 my-lg-0">
+          <li id="info" class="nav-item" onclick="toggleFAQ()"><div class="nav-link"><i class="far fa-question-circle"></i></div></li>
           <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/jdeboi/" target="_blank"><i
                 class="fab fa-instagram"></i></a></li>
           <li class="nav-item"><a class="nav-link" href="https://github.com/jdeboi/hidden-topographies"
@@ -55,6 +56,7 @@
       </div>
     </div>
   </nav>
+  
   <!-- Masthead-->
   <header id="header" class="masthead">
     <div id="landingPage" class="container h-100">
@@ -102,12 +104,41 @@
       </div>
     </div>
   </div>
-  <!-- About-->
 
+  <!-- Maps-->
   <div id="mapContainer">
     <div id="navMap"></div>
     <div id="threeContainer"></div>
     <div id="buttons"></div>
+  </div>
+
+  <!-- faq modal -->
+  <div id="faqModal" class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" tabindex="-1" aria-labelledby="faq" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">FAQ</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>How do I navigate?</h6>
+          <p>On the mini-map: begin by navigating (by dragging/panning) to a city where you spend a lot of time.</p>
+          <p><strong>Click</strong> once on the mini-map to set the coordinates of the data visulization.</p>
+          <p>Terrain: you can drag the mouse and zoom in/out to get different perspectives on the resulting topography.</p>
+          <h6>Why don't I see data?</h6>
+          <p>Begin by making sure you're checking for data at a reasonble set of coordinates. Alternatively, it may be that you've turned off location sharing on your phone and that Google hasn't been storing your location.</p>
+          <h6>How do I stop sharing my data with Google?</h6>
+          <p>Here's <a href="https://www.wired.com/story/google-tracks-you-privacy/" target="_blank">an article</a> about the ways Google tracks your position and how to stop it.</p>
+          <h6>Does the site use my data?</h6>
+          <p>Nope. Everything runs on your computer. It tries to determine your browser location in the beginning (which it doesn't store) in order to set the initial view to a more personally-relevant set of coordinates.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ---------------- my scripts ------------------------ -->

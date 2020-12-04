@@ -4,7 +4,7 @@ import { initTerrain, updateTerrain } from './terrain.js';
 //// FOR DEVELOPMENT
 import json from "../data/Location History.js";
 export const DEV_MODE = false;
-const LOCAL = false;
+const LOCAL = true;
 let consoleID = 0;
 
 let MAP_DIM = 1024;

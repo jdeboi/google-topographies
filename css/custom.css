@@ -49,7 +49,7 @@ a {
 #navMap {
   z-index: 300;
   position: absolute;
-  bottom: 80px;
+  bottom: 50px;
   left: 50px;
   width: 200px;
   height: 200px;
@@ -58,11 +58,9 @@ a {
   display: none;
 }
 
-#faq {
+#info {
   display: none;
 }
-
-
 
 header.masthead {
   padding-top: 10rem;
@@ -74,4 +72,8 @@ header.masthead {
   background-attachment: scroll;
   background-size: cover;
   /* height: 100%; */
+}
+
+#faqModal {
+  display: none;
 }
