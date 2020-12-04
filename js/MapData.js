@@ -17,7 +17,7 @@ let locations = [];
 let json;
 
 // let key = LOCAL?keysDev.mapbox:keys.mapbox;
-const key = keys.mapbox;
+const key = keys.mapbox; //keys.mapbox;
 const mappa = new Mappa('Mapbox', key);
 
 let myMap;
@@ -50,6 +50,7 @@ else {
     readUploadedFile()
       .then((j) => {
         json = j;
+        console.log(json.locations.length)
       })
       .then(getCenter)
       .then((center) => moveMap(center))
@@ -109,7 +110,7 @@ function resetMap() {
 
 // selects coordinates of interest
 // TODO make this faster/ better with a Quad tree or something
-function setLocationBuffer(json) {
+function setLocationBuffer() {
   for (let i = 0; i < json.locations.length; i++) {
     let lat = json.locations[i].latitudeE7 / 10000000.0;
     let lon = json.locations[i].longitudeE7 / 10000000.0;

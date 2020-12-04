@@ -136,7 +136,7 @@ function addTerrain(data) {
   var oceanTexture = new THREE.ImageUtils.loadTexture('textures/terrain/dirt-512.jpg');
   oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
-  var sandyTexture = new THREE.ImageUtils.loadTexture('textures/terrain/images/sand-512.jpg');
+  var sandyTexture = new THREE.ImageUtils.loadTexture('textures/terrain/sand-512.jpg');
   sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
   var grassTexture = new THREE.ImageUtils.loadTexture('textures/terrain/grass-512.jpg');
