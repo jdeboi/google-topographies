@@ -1,7 +1,9 @@
 function handleBrowseClick() {
+    console.log("clicking");
     var fileinput = document.getElementById("browse");
     fileinput.click();
 }
+
 function showInstructions() {
     document.getElementById("instructions").style.display = "block";
     document.getElementById("landingPage").style.display = "none";
