@@ -1,20 +1,5 @@
-/* html, body {
-  margin: 0;
-  position:fixed;
-  top:0;
-  right:0;
-  bottom:0;
-  left:0;
-  height: 100%;
-}
-
-html {
-  width: 100%;
-} */
-
 body {
-  
-  background-color: #fff1c2; 
+  background-color: #fff1c2;
   /* //rgb(59,	103,	99	); */
   color: #61443e;
   font-family: Monospace;
@@ -22,9 +7,8 @@ body {
   min-height: 100%;
 }
 
-
 canvas {
-	display: block;
+  display: block;
 }
 
 a {
@@ -76,4 +60,10 @@ header.masthead {
 
 #faqModal {
   display: none;
+}
+
+#browse {
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
 }

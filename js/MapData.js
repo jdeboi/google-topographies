@@ -52,7 +52,7 @@ let options = {
 
 if (DEV_MODE) startDevMap();
 else {
-  document.getElementById('browse').addEventListener('input', function (evt) {
+  document.getElementById('browse').addEventListener('change', function (evt) {
     readUploadedFile()
       .then((j) => {
         json = j;
