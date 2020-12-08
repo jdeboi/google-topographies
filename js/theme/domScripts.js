@@ -1,5 +1,5 @@
 function handleBrowseClick() {
-    console.log("clicking");
+    // console.log("clicking");
     var fileinput = document.getElementById("browse");
     fileinput.click();
 }
